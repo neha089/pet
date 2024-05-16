@@ -38,6 +38,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SearchParams from './SearchParam';
+import {Link, BrowserRouter, Route, Router, Routes } from 'react-router-dom';
+import Details from './Details';
+import { QueryCache,QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Define custom component starting with a capital letter
 // const Obj = ({ name, sur, parent }) => (
@@ -47,17 +50,37 @@ import SearchParams from './SearchParam';
 //     <p>Parent: {parent}</p>
 //   </div>
 // );
+const queryClient=new QueryClient({
+defaultOptions:{
+  queries:{
+    staleTime:Infinity,
+    cacheTime:Infinity
+  },
+},
+});
+
 
 const App = () => {
   return (
-    <div>
-      <h1>hey</h1>
+    <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+     <header>
+  <Link to="/">Adopt Me!</Link>
+</header>
       {/* Correct usage of custom component */}
       {/* <Obj name="datu" sur="patel" parent="y" />
       <Obj name="di" sur="patel" parent="y" />
       <Obj name="nev" sur="patel" parent="y" /> */}
-      <SearchParams/>
-    </div>
+      {/* <SearchParams/> */}
+     
+      <Routes>
+        <Route path="/details/:id" element={<Details></Details>}></Route>
+        <Route path="/" element={<SearchParams/>}></Route>
+      </Routes>
+      </QueryClientProvider>
+      </BrowserRouter>
+     
+  
   );
 };
 
